@@ -16,9 +16,12 @@ import {
   ShieldCheck, 
   UserCircle, 
   Megaphone, 
-  GraduationCap
+  GraduationCap,
+  Sun,
+  Moon
 } from "lucide-react";
 import { cn } from "../lib/utils";
+import { useTheme } from "../context/ThemeContext";
 
 interface NavItem {
   label: string;
@@ -44,6 +47,7 @@ const navItems: NavItem[] = [
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -65,9 +69,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex text-white">
       {/* Sidebar Desktop */}
       <aside className="hidden lg:flex flex-col w-64 glass-panel m-5 rounded-[24px] sticky top-5 h-[calc(100vh-40px)]">
-        <div className="p-8 pb-10 flex items-center gap-3">
-          <div className="w-3 h-3 bg-blue-400 rounded-full shadow-[0_0_15px_#60a5fa]"></div>
-          <span className="text-2xl font-extrabold tracking-tight">EduCore</span>
+        <div className="p-8 pb-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_15px_#2563eb]"></div>
+            <span className="text-2xl font-extrabold tracking-tight">EduCore</span>
+          </div>
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition-all cursor-pointer shadow-sm"
+            title={theme === "light" ? "Switch to Dark theme" : "Switch to Light theme"}
+          >
+            {theme === "light" ? (
+              <Moon className="w-4 h-4 text-slate-700" />
+            ) : (
+              <Sun className="w-4 h-4 text-amber-300" />
+            )}
+          </button>
         </div>
 
         <nav className="flex-1 overflow-y-auto px-4 space-y-2">
@@ -122,17 +140,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 glass-panel border-x-0 border-t-0 px-4 flex items-center justify-between z-50 rounded-none">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-blue-400 rounded-full shadow-[0_0_10px_#60a5fa]"></div>
+          <div className="w-2.5 h-2.5 bg-blue-500 rounded-full shadow-[0_0_10px_#2563eb]"></div>
           <span className="text-lg font-bold">EduCore</span>
         </div>
-        <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-white">
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="p-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition-all cursor-pointer"
+            title={theme === "light" ? "Switch to Dark theme" : "Switch to Light theme"}
+          >
+            {theme === "light" ? (
+              <Moon className="w-4 h-4 text-slate-700" />
+            ) : (
+              <Sun className="w-4 h-4 text-amber-300" />
+            )}
+          </button>
+          <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-white">
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 bg-[#0f172a]/90 backdrop-blur-xl z-40 pt-16 flex flex-col p-4">
+        <div className="lg:hidden fixed inset-0 bg-[#0f172a]/95 backdrop-blur-xl z-40 pt-16 flex flex-col p-4">
           <nav className="flex-1 space-y-1">
             {filteredNavItems.map((item) => (
               <Link
@@ -149,8 +181,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             ))}
           </nav>
-          <div className="p-4 border-t border-white/10">
-            <button onClick={logout} className="w-full flex items-center gap-3 text-red-400 font-bold">
+          <div className="p-4 border-t border-white/10 space-y-3">
+            <button
+              onClick={toggleTheme}
+              className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm font-medium"
+            >
+              <span className="flex items-center gap-2">
+                {theme === "light" ? <Moon className="w-4 h-4 text-slate-700" /> : <Sun className="w-4 h-4 text-amber-400" />}
+                Theme
+              </span>
+              <span className="text-xs uppercase font-bold text-blue-500">
+                {theme === "light" ? "Light" : "Dark"}
+              </span>
+            </button>
+            <button onClick={logout} className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-red-400 font-bold hover:bg-white/5 transition-all text-sm">
               <LogOut className="w-5 h-5" />
               Sign Out
             </button>

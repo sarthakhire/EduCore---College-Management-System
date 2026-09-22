@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "../context/AuthContext";
-import { GraduationCap, LogIn, Mail, Lock, User as UserIcon, Loader2 } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
+import { GraduationCap, LogIn, Mail, Lock, User as UserIcon, Loader2, Sun, Moon } from "lucide-react";
 
 export default function Login() {
   const { login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,7 +26,27 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 text-white">
+    <div className="min-h-screen flex items-center justify-center p-6 text-white relative">
+      <div className="absolute top-6 right-6 z-20">
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 shadow-sm transition-all text-xs font-semibold cursor-pointer"
+        >
+          {theme === "light" ? (
+            <>
+              <Moon className="w-4 h-4 text-slate-700" />
+              <span className="text-slate-700">Dark Mode</span>
+            </>
+          ) : (
+            <>
+              <Sun className="w-4 h-4 text-amber-300" />
+              <span className="text-white">Light Mode</span>
+            </>
+          )}
+        </button>
+      </div>
+
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

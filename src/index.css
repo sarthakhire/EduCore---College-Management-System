@@ -1,35 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "SF Pro Display", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "SF Pro Display", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
   
-  --color-glass: rgba(255, 255, 255, 0.1);
-  --color-glass-border: rgba(255, 255, 255, 0.2);
-  --color-text-dim: rgba(255, 255, 255, 0.7);
-  --color-accent-blue: #60a5fa;
+  --color-glass: rgba(15, 23, 42, 0.45);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+  --color-text-dim: rgba(241, 245, 249, 0.7);
+  --color-accent-blue: #2563eb;
+  
+  /* Premium Ivy/Yale Academic color palette overrides */
+  --color-blue-500: #2563eb; /* Yale Royal Blue */
+  --color-blue-600: #1d4ed8; /* Deep Oxford Blue */
+  --color-blue-400: #3b82f6; /* Trustworthy Sky Blue */
+  
+  --color-emerald-400: #10b981; /* Ivy Green */
+  --color-emerald-500: #059669; /* Deep Emerald */
+  
+  --color-amber-400: #f59e0b; /* Amber Gold */
+  --color-amber-500: #d97706; /* Ochre Academic Gold */
 }
 
 @layer base {
   body {
-    @apply min-h-screen bg-[#0f172a] text-white antialiased;
-    background-image: radial-gradient(at 0% 0%, #1e1b4b 0%, transparent 50%), 
-                     radial-gradient(at 100% 0%, #312e81 0%, transparent 50%), 
-                     radial-gradient(at 100% 100%, #4c1d95 0%, transparent 50%), 
-                     radial-gradient(at 0% 100%, #1e3a8a 0%, transparent 50%);
+    @apply min-h-screen bg-[#090d16] text-[#f8fafc] antialiased;
+    background-image: radial-gradient(at 0% 0%, #0c1424 0%, transparent 65%), 
+                     radial-gradient(at 100% 0%, #0f1a3a 0%, transparent 65%), 
+                     radial-gradient(at 50% 100%, #070a10 0%, transparent 100%);
+    background-attachment: fixed;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Educational Light Theme Styling */
+  [data-theme="light"] body,
+  html.light body {
+    @apply bg-[#f8fafc] text-[#0f172a];
+    background-image: radial-gradient(at 0% 0%, #f1f5f9 0%, transparent 60%), 
+                     radial-gradient(at 100% 0%, #e0e7ff 0%, transparent 50%), 
+                     radial-gradient(at 50% 100%, #f8fafc 0%, transparent 100%);
     background-attachment: fixed;
   }
 }
 
 @layer components {
+  /* Dark Mode Default Panels */
   .glass-panel {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl;
+    @apply bg-[#0f172a]/80 backdrop-blur-xl border border-white/[0.06] shadow-xl shadow-black/30;
   }
   
   .glass-card {
-    @apply bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg transition-all duration-300;
+    @apply bg-[#1e293b]/55 backdrop-blur-lg border border-white/[0.05] shadow-lg shadow-black/20 transition-all duration-300;
   }
 
   .nav-active {
-    @apply bg-white/15 text-white border border-white/20 shadow-sm;
+    @apply bg-blue-600/15 text-blue-400 border border-blue-500/20 shadow-md shadow-blue-500/5;
   }
+
+  /* Light Mode Specific Components */
+  [data-theme="light"] .glass-panel,
+  html.light .glass-panel {
+    background-color: rgba(255, 255, 255, 0.94);
+    border-color: rgba(226, 232, 240, 0.95);
+    box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.07), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+    color: #0f172a;
+  }
+
+  [data-theme="light"] .glass-card,
+  html.light .glass-card {
+    background-color: #ffffff;
+    border-color: rgba(226, 232, 240, 0.95);
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.05);
+    color: #0f172a;
+  }
+
+  [data-theme="light"] .nav-active,
+  html.light .nav-active {
+    background-color: rgba(37, 99, 235, 0.08);
+    color: #2563eb;
+    border-color: rgba(37, 99, 235, 0.2);
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
+  }
+}
+
+/* Light Theme Utility Adaptations for Educational Experience */
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="light"] .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .text-white\/90 {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .text-white\/80 {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .text-white\/70 {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .text-white\/60 {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .text-white\/50 {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .text-white\/40 {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .text-white\/30 {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .text-white\/20 {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .text-white\/10 {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .text-white\/5 {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="light"] .bg-white\/5 {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+}
+
+[data-theme="light"] .bg-white\/10 {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .bg-white\/15 {
+  background-color: rgba(15, 23, 42, 0.09) !important;
+}
+
+[data-theme="light"] .border-white\/5 {
+  border-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .border-white\/10 {
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+[data-theme="light"] .border-white\/20 {
+  border-color: rgba(15, 23, 42, 0.16) !important;
+}
+
+[data-theme="light"] .border-white\/30 {
+  border-color: rgba(15, 23, 42, 0.22) !important;
+}
+
+[data-theme="light"] .bg-\[\#0f172a\] {
+  background-color: #ffffff !important;
+}
+
+[data-theme="light"] .bg-\[\#1e293b\] {
+  background-color: #f1f5f9 !important;
+}
+
+[data-theme="light"] .bg-\[\#090d16\] {
+  background-color: #f8fafc !important;
+}
+
+[data-theme="light"] .border-\[\#334155\] {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .text-\[\#94a3b8\] {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .text-blue-100 {
+  color: #1e3a8a !important;
+}
+
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }

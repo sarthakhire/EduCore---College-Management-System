@@ -127,7 +127,11 @@ export const getMe = async (req: any, res: Response) => {
     console.log(`👤 Fetching profile for user ID: ${req.user.id}`);
     const user = await User.findById(req.user.id).select('-password');
     if (!user) {
-      console.log(`❌ Profile fetch failed: User ${req.user.id} not found`);
+      res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+      });
       return res.status(404).json({ message: 'User not found' });
     }
 

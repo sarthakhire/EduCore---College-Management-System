@@ -18,7 +18,16 @@ export const authenticate = (req: any, res: Response, next: NextFunction) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === 'TokenExpiredError') {
+      console.log('Auth middleware: Token expired');
+      res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+      });
+      return res.status(401).json({ message: 'Unauthorized: Token expired', code: 'TOKEN_EXPIRED' });
+    }
     console.error('Auth middleware error:', err);
     res.status(401).json({ message: 'Unauthorized: Invalid token' });
   }
