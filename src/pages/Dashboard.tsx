@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { 
   Users, 
@@ -9,7 +10,9 @@ import {
   Calendar,
   Clock,
   ChevronRight,
-  Plus
+  Plus,
+  Sparkles,
+  BrainCircuit
 } from "lucide-react";
 import { motion } from "motion/react";
 import { 
@@ -131,6 +134,40 @@ export default function Dashboard() {
               {user.displayName} <span className="ml-2 text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-md border border-blue-500/30 uppercase font-bold tracking-wider">{user.role}</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* AI Tutor Feature Banner */}
+      <div className="glass-panel p-6 rounded-[28px] border-white/10 [data-theme=light]_&:border-slate-200 relative overflow-hidden bg-gradient-to-r from-blue-900/30 via-slate-900/40 to-indigo-900/30 [data-theme=light]_&:from-blue-50 [data-theme=light]_&:via-slate-50 [data-theme=light]_&:to-indigo-50">
+        <div className="absolute right-0 top-0 w-80 h-full bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/20">
+              <Sparkles className="w-6 h-6 animate-pulse" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 [data-theme=light]_&:bg-blue-100 text-blue-400 [data-theme=light]_&:text-blue-800 font-bold text-[10px] uppercase tracking-wider">
+                  New Feature • Powered by Gemini 3.8 Flash
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-white [data-theme=light]_&:text-slate-900">
+                AI Tutor & Study Coach Ready
+              </h3>
+              <p className="text-xs text-slate-300 [data-theme=light]_&:text-slate-600 max-w-xl leading-relaxed">
+                Need help with your enrolled courses? Ask complex questions, generate practice quizzes, test yourself with flashcards, or create an exam revision cheat sheet.
+              </p>
+            </div>
+          </div>
+
+          <Link
+            to="/ai-tutor"
+            className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] shrink-0"
+          >
+            <BrainCircuit className="w-4 h-4" />
+            <span>Launch AI Tutor</span>
+            <ChevronRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
 

@@ -181,7 +181,7 @@ export const updateProfile = async (req: any, res: Response) => {
     // Handle files via multer
     // We expect profilePhoto and signaturePhoto as field names
     if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const files = req.files as { [fieldname: string]: any[] };
       if (files.profilePhoto && files.profilePhoto[0]) {
         const file = files.profilePhoto[0];
         if (!file.path.startsWith('http')) { // Local upload

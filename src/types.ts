@@ -78,3 +78,46 @@ export interface Announcement {
   createdByName?: string;
   createdAt: string;
 }
+
+export type SlotType = 'lecture' | 'lab' | 'tutorial' | 'break' | 'seminar' | 'other';
+
+export interface TimetableSlot {
+  _id?: string;
+  slotIndex?: number;
+  timeRange?: string; // e.g. "10:00 - 10:55"
+  startTime?: string;
+  endTime?: string;
+  subject: string; // e.g. "PPS", "M-II", "CHEM"
+  subjectCode?: string;
+  subjectId?: string;
+  teacher?: string;
+  teacherId?: string;
+  room?: string;
+  type?: SlotType;
+  color?: string;
+  notes?: string;
+}
+
+export interface DaySchedule {
+  day: string;
+  slots: TimetableSlot[];
+}
+
+export interface TimetableItem {
+  _id: string;
+  title: string;
+  className: string;
+  room: string;
+  academicYear: string;
+  courseId?: string;
+  courseName?: string;
+  semester: number;
+  section?: string;
+  isDefault?: boolean;
+  timeSlots: string[];
+  days: string[];
+  schedule: DaySchedule[];
+  updatedAt?: string;
+  createdAt?: string;
+}
+

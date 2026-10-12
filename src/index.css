@@ -181,8 +181,43 @@
   color: #475569 !important;
 }
 
-[data-theme="light"] .text-blue-100 {
+[data-theme="light"] .text-blue-100,
+html.light .text-blue-100 {
   color: #1e3a8a !important;
+}
+
+/* High visibility rules for educational light theme */
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300,
+html.light .text-slate-100,
+html.light .text-slate-200,
+html.light .text-slate-300 {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .text-slate-400,
+html.light .text-slate-400 {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .text-slate-500,
+html.light .text-slate-500 {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .text-blue-300,
+[data-theme="light"] .text-blue-400,
+html.light .text-blue-300,
+html.light .text-blue-400 {
+  color: #1d4ed8 !important;
+}
+
+[data-theme="light"] .text-emerald-300,
+[data-theme="light"] .text-emerald-400,
+html.light .text-emerald-300,
+html.light .text-emerald-400 {
+  color: #047857 !important;
 }
 
 [data-theme="light"] input:not([type="checkbox"]):not([type="radio"]),

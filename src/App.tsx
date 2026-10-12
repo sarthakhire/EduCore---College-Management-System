@@ -17,6 +17,7 @@ import Courses from "./pages/Courses";
 import Attendance from "./pages/Attendance";
 import Performance from "./pages/Performance";
 import Profile from "./pages/Profile";
+import AITutor from "./pages/AITutor";
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode, roles?: string[] }) {
   const { user } = useAuth();
@@ -68,6 +69,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Navigate to="/" replace />} />
+              <Route path="/ai-tutor" element={<AITutor />} />
               <Route path="/login" element={<Navigate to="/" replace />} />
               <Route path="/academics" element={<Academics />} />
               <Route path="/attendance" element={<Attendance />} />

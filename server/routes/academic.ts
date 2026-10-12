@@ -55,8 +55,11 @@ router.delete('/users/:id', authenticate, checkRole(['admin']), adminController.
 
 // Timetables
 router.get('/timetables', adminController.getTimetables);
-router.post('/timetables', authenticate, checkRole(['admin', 'teacher']), adminController.createTimetable);
-router.patch('/timetables/:id', authenticate, checkRole(['admin', 'teacher']), adminController.updateTimetable);
+router.post('/timetables', authenticate, checkRole(['admin', 'teacher', 'student']), adminController.createTimetable);
+router.patch('/timetables/:id', authenticate, checkRole(['admin', 'teacher', 'student']), adminController.updateTimetable);
+router.put('/timetables/:id', authenticate, checkRole(['admin', 'teacher', 'student']), adminController.updateTimetable);
+router.delete('/timetables/:id', authenticate, checkRole(['admin', 'teacher', 'student']), adminController.deleteTimetable);
+router.post('/timetables/reset', authenticate, checkRole(['admin', 'teacher', 'student']), adminController.resetTimetable);
 
 // Announcements
 router.get('/announcements', adminController.getAnnouncements);

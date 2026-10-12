@@ -17,6 +17,7 @@ import {
   UserCircle, 
   Megaphone, 
   GraduationCap,
+  Sparkles,
   Sun,
   Moon
 } from "lucide-react";
@@ -32,6 +33,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/", roles: ["admin", "teacher", "student"] },
+  { label: "AI Tutor", icon: Sparkles, path: "/ai-tutor", roles: ["admin", "teacher", "student"] },
   { label: "Announcements", icon: Megaphone, path: "/announcements", roles: ["admin", "teacher", "student"] },
   { label: "Students", icon: Users, path: "/admin/students", roles: ["admin"] },
   { label: "Teachers", icon: Users, path: "/admin/teachers", roles: ["admin"] },

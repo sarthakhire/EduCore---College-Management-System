@@ -55,13 +55,71 @@ export const deleteUser = async (req: any, res: Response) => {
 };
 
 // Timetables
+const defaultTimeSlots = [
+  "10:00 - 10:55",
+  "10:55 - 11:50",
+  "11:50 - 12:30",
+  "12:30 - 01:25",
+  "01:25 - 02:20"
+];
+
+const defaultDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+const defaultTimetableGrid: Record<string, string[]> = {
+  Monday: ["PPS", "M-II", "CHEM", "BEE", "F1-CHEM"],
+  Tuesday: ["BEE", "M-II", "F1-BEE", "CHEM", "CCC-II"],
+  Wednesday: ["CHEM", "EG", "BEE", "PPS", "WS"],
+  Thursday: ["IKS", "WS", "M-II", "EG", "BEE"],
+  Friday: ["PPS", "CHEM", "EG", "PPS", "M-II"],
+  Saturday: ["EG", "BEE", "F1-EG", "M-II", "CHEM"]
+};
+
+const buildDefaultSchedule = () => {
+  return defaultDays.map(day => ({
+    day,
+    slots: (defaultTimetableGrid[day] || []).map((subject, index) => {
+      const isLab = subject.startsWith('F1-') || subject === 'WS' || subject === 'CCC-II';
+      return {
+        slotIndex: index,
+        timeRange: defaultTimeSlots[index] || '',
+        subject,
+        room: isLab ? 'Lab 3 / WS' : 'Room 331',
+        type: isLab ? 'lab' : 'lecture',
+        teacher: subject === 'M-II' ? 'Dr. Sharma' : subject === 'CHEM' || subject === 'F1-CHEM' ? 'Dr. Jamdhade' : 'Faculty Member',
+        notes: isLab ? 'Bring lab manual & journal' : ''
+      };
+    })
+  }));
+};
+
 export const getTimetables = async (req: Request, res: Response) => {
   try {
     const { courseId, semester } = req.query;
     const query: any = {};
     if (courseId) query.courseId = courseId;
     if (semester) query.semester = semester;
-    const timetables = await Timetable.find(query).populate('slots.subjectId slots.teacherId');
+    let timetables = await Timetable.find(query).sort({ isDefault: -1, createdAt: 1 }).populate('slots.subjectId slots.teacherId schedule.slots.subjectId schedule.slots.teacherId');
+    
+    // Auto-seed if database is currently empty
+    if (timetables.length === 0 && Object.keys(query).length === 0) {
+      const defaultSchedule = buildDefaultSchedule();
+      const defaultTimetable = new Timetable({
+        title: 'FE Master Timetable',
+        className: 'FE F',
+        room: '331',
+        academicYear: '2025-26',
+        semester: 1,
+        section: 'FE F',
+        courseName: 'First Year Engineering (FE)',
+        isDefault: true,
+        timeSlots: defaultTimeSlots,
+        days: defaultDays,
+        schedule: defaultSchedule
+      });
+      await defaultTimetable.save();
+      timetables = [defaultTimetable];
+    }
+
     res.json(timetables);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -70,7 +128,14 @@ export const getTimetables = async (req: Request, res: Response) => {
 
 export const createTimetable = async (req: Request, res: Response) => {
   try {
-    const timetable = new Timetable(req.body);
+    const timetableData = { ...req.body };
+    if (!timetableData.timeSlots || timetableData.timeSlots.length === 0) {
+      timetableData.timeSlots = defaultTimeSlots;
+    }
+    if (!timetableData.days || timetableData.days.length === 0) {
+      timetableData.days = defaultDays;
+    }
+    const timetable = new Timetable(timetableData);
     await timetable.save();
     res.status(201).json(timetable);
   } catch (error: any) {
@@ -80,8 +145,51 @@ export const createTimetable = async (req: Request, res: Response) => {
 
 export const updateTimetable = async (req: Request, res: Response) => {
   try {
-    const timetable = await Timetable.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const timetable = await Timetable.findByIdAndUpdate(
+      req.params.id, 
+      { ...req.body, updatedAt: new Date() }, 
+      { new: true, runValidators: true }
+    );
+    if (!timetable) {
+      return res.status(404).json({ message: 'Timetable not found' });
+    }
     res.json(timetable);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteTimetable = async (req: Request, res: Response) => {
+  try {
+    const deleted = await Timetable.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ message: 'Timetable not found' });
+    }
+    res.json({ message: 'Timetable deleted successfully', id: req.params.id });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const resetTimetable = async (req: Request, res: Response) => {
+  try {
+    await Timetable.deleteMany({});
+    const defaultSchedule = buildDefaultSchedule();
+    const defaultTimetable = new Timetable({
+      title: 'FE Master Timetable',
+      className: 'FE F',
+      room: '331',
+      academicYear: '2025-26',
+      semester: 1,
+      section: 'FE F',
+      courseName: 'First Year Engineering (FE)',
+      isDefault: true,
+      timeSlots: defaultTimeSlots,
+      days: defaultDays,
+      schedule: defaultSchedule
+    });
+    await defaultTimetable.save();
+    res.json({ message: 'Timetables reset to initial default', timetable: defaultTimetable });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

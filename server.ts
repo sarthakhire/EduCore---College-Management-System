@@ -12,6 +12,7 @@ import bcrypt from 'bcryptjs';
 
 import authRoutes from './server/routes/auth.ts';
 import academicRoutes from './server/routes/academic.ts';
+import aiTutorRoutes from './server/routes/aiTutor.ts';
 import { User } from './server/models/User.ts';
 
 dotenv.config();
@@ -185,6 +186,7 @@ async function startServer() {
   // API Routes
   app.use('/api/auth', authRoutes);
   app.use('/api/academic', academicRoutes);
+  app.use('/api/ai-tutor', aiTutorRoutes);
 
   // Debug route to check users (Dev only)
   app.get('/api/debug/users', async (req, res) => {
